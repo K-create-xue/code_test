@@ -2,7 +2,7 @@
 #include<map>
 //#include<string>
 std::map<char, int> mymm;
-//
+
 
 int test() {
 	std::string s1;
