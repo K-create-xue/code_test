@@ -1,23 +1,92 @@
 #include<iostream>
-#include<map>
-//#include<string>
-std::map<char, int> mymm;
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+    vector<vector<int>> fun_three_sum(vector<int>& nums, int index, int target, int count) {
+        int n = nums.size();
+        vector<vector<int>> res;
+        // i 从 start 开始穷举，其他都不变
+        if (count > n || n < 2)
+            return res;
+        if (count > 2) {
+            int lo = index, hi = n - 1;
+            while (lo < hi) {
+                int sum = nums[lo] + nums[hi];
+                int left = nums[lo], right = nums[hi];
+                if (sum < target) {
+                    while (lo < hi && nums[lo] == left) lo++;
+                }
+                else if (sum > target) {
+                    while (lo < hi && nums[hi] == right) hi--;
+                }
+                else {
+                    res.push_back({ left, right });
+                    while (lo < hi && nums[lo] == left) lo++;
+                    while (lo < hi && nums[hi] == right) hi--;
+                }
+            }
+        }
+        else {
+            for (int i = index; i < n; i++) {
+                vector<vector<int>> vec_nsum = fun_three_sum(nums, i + 1, target - nums[i], count - 1);
+                for (int j = 0; j < vec_nsum.size(); ++j) {
+                    vec_nsum[j].push_back(nums[i]);
+                    res.push_back(vec_nsum[j]);
+                }
+
+                while (i < n - 1 && nums[i] == nums[i + 1])
+                    ++i;
+            }
+        }
+        return res;
+    }
+
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        sort(nums.begin(), nums.end());
+        int n = nums.size();
+        vector<vector<int>> res;
+
+        res = fun_three_sum(nums, 0, target, 4);
+
+        return res;
+    }
 
 
-int test() {
-	std::string s1;
-	std::string s2;
+    int main() {
+        vector<int> v{ 1,0,-1,0,-2,2 };
+        vector<vector<int>> res=fourSum(v, 0);
+        for (auto& e : res) {
+            for (auto& eE : e) {
+                cout << eE << " ";
+            }
+        }
+        return 0;
+    }
 
-	std::cin >> s1 >> s2;
-	std::cout << s1 << "----" << s2;
-	return 0;
-
-}
-
-int main() {
-	test();
-	return 0;
-}
+//#include<iostream>
+//#include<map>
+////#include<string>
+//std::map<char, int> mymm;
+//
+//
+//
+//
+////
+////int test() {
+////	std::string s1;
+////	std::string s2;
+////
+////	std::cin >> s1 >> s2;
+////	std::cout << s1 << "----" << s2;
+////	return 0;
+////
+////}
+//
+//int main() {
+//	test();
+//	return 0;
+//}
 
 //测试对多的【】使用  不能使用   
 //int main() {
